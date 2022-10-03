@@ -1,0 +1,60 @@
+---
+title: "816 - Assignment 4"
+author: "Nasha Virata"
+output:
+  word_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r}
+setwd("~/R/data_visualization")
+getwd()
+```
+
+```{r}
+install.packages("devtools")
+devtools::install_github("tidyverse/tidyverse")
+```
+
+```{r}
+library("tidyverse")
+```
+
+```{r}
+listings <- read_csv('http://data.insideairbnb.com/united-states/ny/new-york-city/2022-09-07/visualisations/listings.csv')
+
+head(listings)
+```
+
+```{r}
+colnames(listings)
+```
+
+```{r}
+summary(listings)
+```
+
+```{r}
+str(listings)
+```
+```{r}
+listings %>% 
+  group_by(neighbourhood_group) %>%
+  count() %>% 
+  arrange(desc(n)) %>%
+  rename('borough' = neighbourhood_group,
+         'listings' = n)
+```
+
+```{r}
+hosts <- listings %>% 
+  group_by(host_id) %>% 
+  count()
+```
+
+```{r}
+hosts %>% 
+  filter(n > 100)
+```
+
