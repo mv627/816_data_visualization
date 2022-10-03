@@ -1,0 +1,84 @@
+---
+title: "816 - Assignment 4"
+author: "Nasha Virata"
+output:
+  word_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r}
+setwd("~/R/data_visualization")
+getwd()
+```
+
+```{r}
+install.packages("devtools")
+devtools::install_github("tidyverse/tidyverse")
+```
+
+```{r}
+library("tidyverse")
+```
+
+```{r}
+listings <- read_csv('http://data.insideairbnb.com/united-states/ny/new-york-city/2022-09-07/visualisations/listings.csv')
+
+head(listings)
+```
+id
+<dbl>
+name
+<chr>
+host_id
+<dbl>
+host_name
+<chr>
+neighbourhood_group
+<chr>
+77765	Superior @ Box House	417504	The Box House Hotel	Brooklyn	
+2539	Clean & quiet apt home by the park	2787	John	Brooklyn	
+45910	Beautiful Queens Brownstone! - 5BR	204539	Mark	Queens	
+45935	Room in Beautiful Townhouse.	204586	L	Bronx	
+45936	Couldn't Be Closer To Columbia Uni	867225	Rahul	Manhattan	
+80493	Cozy room in East Village with AC	434987	Jennifer	Manhattan
+```{r}
+colnames(listings)
+```
+[1] "id"                             "name"                          
+ [3] "host_id"                        "host_name"                     
+ [5] "neighbourhood_group"            "neighbourhood"                 
+ [7] "latitude"                       "longitude"                     
+ [9] "room_type"                      "price"                         
+[11] "minimum_nights"                 "number_of_reviews"             
+[13] "last_review"                    "reviews_per_month"             
+[15] "calculated_host_listings_count" "availability_365"              
+[17] "number_of_reviews_ltm"          "license"       
+
+```{r}
+summary(listings)
+```
+
+```{r}
+str(listings)
+```
+```{r}
+listings %>% 
+  group_by(neighbourhood_group) %>%
+  count() %>% 
+  arrange(desc(n)) %>%
+  rename('borough' = neighbourhood_group,
+         'listings' = n)
+```
+
+```{r}
+hosts <- listings %>% 
+  group_by(host_id) %>% 
+  count()
+```
+
+```{r}
+hosts %>% 
+  filter(n > 100)
+```
+
