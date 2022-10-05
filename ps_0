@@ -1,0 +1,128 @@
+---
+title: "Problem Set 0"
+author: "Nasha Virata"
+date: '2022-10-03'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+```
+
+
+###########################################################
+# Data Visualization for Public Informatics Problem Set 0 #
+###########################################################
+
+# Part 0: Environment setup
+# Load any required libraries using the library() function in this section.
+
+```{r}
+install.packages("tidyverse")
+```
+
+```{r}
+library("tidyverse")
+```
+
+# Part 1: Reading in the data.
+# Prepare R code to read in the the dataset to your R session using the tidyverse. Assign your dataframe the name "housing."
+
+```{r}
+housing <- read_csv("https://econdata.s3-us-west-2.amazonaws.com/Reports/Core/RDC_Inventory_Core_Metrics_Zip_History.csv")
+```
+
+# Part 2: Inspecting the data
+# Using base R data exploration functions, inspect the housing dataset you've created and answer the following questions.
+# Show code for all answers.
+
+# 1. What are the dimensions of your dataset? How many columns and how many rows does it have?
+# The housing dataset has 40 columns and 2071737 rows
+
+```{r}
+ncol(housing)
+nrow(housing)
+```
+# 2. Take a look at the structure of the data. What is the most common data type within this dataset?
+# The most common data type are doubles with the first three columns character data types.  
+
+```{r}
+str(housing)
+```
+
+# 3. Show the first few rows of the dataset
+
+```{r}
+head(housing)
+```
+
+# 4. Print a summary of the dataset using R
+```{r}
+summary(housing)
+```
+
+# 5. Using the summary that you've created, write down the maximum value of the column 'median_listing_price_per_square_foot'
+
+# $ 795,000 
+
+# Part 3: Transform, filter & visualize the data
+# This dataset is quite large. We will filter and summarize it in this section before visualizing it.
+
+# 1. Use dplyr to filter the dataset to the month of December, 2021 (202112). Use the column month_date_yyyymm to filter the data.
+# Store your filtered dataset under the name housing_dec_21
+
+```{r}
+housing_dec_21 <- housing %>% 
+  filter(month_date_yyyymm == "202112")
+```
+
+```{r}
+colnames(housing_dec_21)
+```
+
+
+# 2. Use base R graphics to plot the median_listing_price column from housing_dec_21 with the default options. Be sure to access your data using the $ operator
+
+```{r}
+plot(housing_dec_21$median_listing_price)
+```
+
+
+# 3. Take your answer to the previous question and change it from a scatterplot to a histogram using the "type" argument to the plot() function. Run help(plot) if you are unclear.
+
+```{r}
+plot(housing_dec_21$median_listing_price, type = "h")
+```
+
+
+# 4. Pick another variable of your choice from the dataset and visualize it as you did in the previous question.
+
+```{r}
+plot(housing_dec_21$median_days_on_market, type = "h")
+```
+
+
+# 5. Use dplyr to rearrange your housing_dec_21 dataset. Arrange it by the median_listing_price in descending order. List the top 3 postal codes by median listing price.
+
+```{r}
+housing_dec_21 %>% 
+  select(postal_code, median_listing_price) %>% 
+  arrange(desc(median_listing_price)) %>% 
+  slice_max(median_listing_price, n = 3)
+```
+# 6. Follow the same steps as the previous question, but eliminate the descending order. Identify the bottom 3 postal codes for median listing price.
+
+
+
+
+
+```{r}
+housing_dec_21 %>% 
+  select(postal_code, median_listing_price) %>% 
+  slice_min(median_listing_price, n = 3) %>% 
+  arrange((median_listing_price))
+```
+
