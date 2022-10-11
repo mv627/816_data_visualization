@@ -1,0 +1,117 @@
+---
+title: "Diamonds"
+author: "Nasha Virata"
+date: '2022-10-10'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r knitr_opts, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  comment = "#>",
+  collapse = TRUE
+)
+```
+
+```{r setup, include = FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+smaller <- diamonds %>%  
+  filter(carat <= 2.5)
+```
+
+```{r}
+comma <- function(x) 
+  format(x, digits = 2, big.mark = ",")
+```
+
+We have data about `r nrow(diamonds)` diamonds. Only 
+`r nrow(diamonds) - nrow(smaller)` are larger than
+2.5 carats. The distribution of the remainder is shown
+below:
+
+```{r, echo = FALSE}
+smaller %>%  
+  ggplot(aes(carat)) + 
+  geom_freqpoly(binwidth = 0.01)
+```
+
+*Most* of the remaining diamonds are ^very^ ^small^, smaller than 0.5 carats although there are others clustered around the **1 carat** size 
+
+## Exercise 27.4.7
+
+### 1. Add a section that explores how diamond sizes vary by cut, colour, and clarity. Assume you’re writing a report for someone who doesn’t know R, and instead of setting echo = FALSE on each chunk, set a global option.
+
+```{r}
+colnames(diamonds)
+```
+
+### 2. Describe the largest 20 diamonds, including a table that displays their most recent attributes
+
+The below plot shows us that diamonds that are lesser in quality tend to also be larger in size. 
+```{r}
+ggplot(diamonds, aes(y = carat, x = cut)) +
+  geom_boxplot()
+```
+
+Similarly there is an inverse relationship between diamond color and size
+```{r}
+ggplot(diamonds, aes(y = carat, x = color)) +
+  geom_boxplot()
+```
+
+And again, we see the trade off between size and the other characteristics with clarity and size
+```{r}
+ggplot(diamonds, aes(y = carat, x = clarity)) +
+  geom_boxplot()
+```
+
+```{r results = "asis"}
+largest <- diamonds %>% 
+  arrange(desc(carat)) %>% 
+  slice(1:20) %>% 
+  select(carat, cut, color, clarity, depth) %>% 
+  knitr::kable(
+    caption = "The largest 20 diamonds in the `diamonds` dataset."
+  )
+```
+
+### 3. Modify diamonds-sizes.Rmd to use comma() to produce nicely formatted output. Also include the percentage of diamonds that are larger than 2.5 carats.
+
+```{r purl = FALSE}
+large <- nrow(diamonds) - nrow(smaller)
+percent_large <- large / nrow(diamonds) * 100
+```
+
+```{r}
+percent_large
+```
+
+### 4. Set up a networks of chunks...
+
+* we would use this setup for a new document*
+##```{r setup, include = FALSE}
+## knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+##```
+
+The chunk 'a' has no dependencies
+```{r a}
+print(lubridate::now())
+a <- 1
+```
+But the chunk 'b' depends on 'a'
+```{r b, dependson = c("a")}
+print(lubridate::now())
+b <- a + 5
+```
+Chunk 'c' also depends on 'a'
+```{r c, dependson = c("a")}
+print(lubridate::now())
+c <- a * 3
+```
+If I knit this document on a loop, the values from a, b, and c will be the same, because I cached them so will refer back to the original a, b, and c each time. 

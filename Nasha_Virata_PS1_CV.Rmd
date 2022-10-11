@@ -1,0 +1,31 @@
+---
+date: '2022-10-07'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = FALSE}
+tinytex::install_tinytex(force = TRUE)
+```
+
+
+# **Nasha Virata^[Full name: Nastassia Virata]** 
+## ncvirata@gmail.com
+
+---
+# Education
+*   The New School of Public Policy, MS, **2019**
+*   Stanford University, BA, **2007**
+
+# Employment
+*   Center for New York City Affairs, Research Assistant, **2018-2020**
+*   Venture Consultant, Growth Analyst, **2010-2017**
+*   Morgan Stanley, Analyst, **2007-2010**
+
+> "Here is a block quote"
+
