@@ -1,0 +1,107 @@
+---
+title: "Assignment 7"
+author: "Nasha Virata"
+date: '2022-11-14'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+
+base r:
+```{r}
+par(bg = "light blue")
+plot(mtcars$wt, mtcars$mpg)
+```
+
+ggplot2:
+```{r}
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  theme(panel.background = element_rect(fill = "lightgreen"))
+```
+
+base r:
+```{r}
+plot(pressure$temperature, pressure$pressure, type = "l", col = "blue")
+```
+
+```{r}
+plot(pressure$temperature, pressure$pressure, type = "l")
+points(pressure$temperature, pressure$pressure)
+
+lines(pressure$temperature, pressure$pressure/2, col = "red")
+points(pressure$temperature, pressure$pressure/2, col = "red")
+```
+
+ggplot2:
+```{r}
+ggplot(pressure, aes(x = temperature, y = pressure)) +
+  geom_line(linetype = "dashed")
+```
+ggplot2:
+```{r}
+ggplot(pressure, aes(x = temperature, y = pressure)) +
+  geom_line() +
+  geom_point()
+```
+
+base r:
+```{r}
+barplot(BOD$demand, names.arg = BOD$Time, col = "blue")
+```
+
+```{r}
+table(mtcars$cyl)
+```
+
+```{r}
+barplot(table(mtcars$cyl))
+```
+
+
+```{r}
+# Bar graph of values. This uses the BOD data frame, with the
+# "Time" column for x values and the "demand" column for y values.
+ggplot(BOD, aes(x = Time, y = demand)) +
+  geom_col()
+
+# Convert the x variable to a factor, so that it is treated as discrete
+ggplot(BOD, aes(x = factor(Time), y = demand)) +
+  geom_col()
+```
+
+```{r}
+# Bar graph of counts This uses the mtcars data frame, with the "cyl" column for
+# x position. The y position is calculated by counting the number of rows for
+# each value of cyl.
+ggplot(mtcars, aes(x = cyl)) +
+  geom_bar()
+
+# Bar graph of counts
+ggplot(mtcars, aes(x = factor(cyl))) +
+  geom_bar()
+```
+base r:
+```{r}
+hist(mtcars$mpg)
+
+# Specify approximate number of bins with breaks
+hist(mtcars$mpg, breaks = 10, col = "pink")
+```
+
+```{r}
+ggplot(mtcars, aes(x = mpg)) +
+  geom_histogram()
+
+# With wider bins
+ggplot(mtcars, aes(x = mpg)) +
+  geom_histogram(binwidth = 4, fill = "orange", col= I("red"))
+```
